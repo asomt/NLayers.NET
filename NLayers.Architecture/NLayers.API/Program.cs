@@ -1,10 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
-using NLayers.BusinessLogic.Contracts;
-using NLayers.BusinessLogic.Managers;
-using NLayers.DataAccess;
-using NLayers.DataAccess.Contracts;
-using NLayers.DataAccess.Stores;
+using NLayers.API.Data1;
+
+
 
 namespace NLayers.API
 {
