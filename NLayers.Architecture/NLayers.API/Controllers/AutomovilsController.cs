@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NLayers.DataAccess;
-using NLayers.Entites.Entities;
+using NLayers.API.Data1;
+using NLayers.API.Models1;
 
 namespace NLayers.API.Controllers
 {
@@ -121,5 +121,4 @@ namespace NLayers.API.Controllers
             return _context.Automoviles.Any(e => e.Id == id);
         }
     }
-
 }
