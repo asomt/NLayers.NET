@@ -10,25 +10,25 @@ using NLayers.Entites.Entities;
 
 namespace NLayers.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class AutomovilsController : ControllerBase
+    [Route("api/v1/automovil")]
+    public class AutomovilController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public AutomovilsController(AppDbContext context)
+        public AutomovilController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Automovils
+        // ✅ GET: api/v1/automovil
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Automovil>>> GetAutomoviles()
         {
             return await _context.Automoviles.ToListAsync();
         }
 
-        // GET: api/Automovils/5
+        // ✅ GET: api/v1/automovil/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Automovil>> GetAutomovil(int id)
         {
@@ -42,8 +42,25 @@ namespace NLayers.API.Controllers
             return automovil;
         }
 
-        // PUT: api/Automovils/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // ✅ GET: api/v1/automovil/chasis/{numeroChasis}
+        [HttpGet("chasis/{numeroChasis}")]
+        public async Task<ActionResult<Automovil>> GetByChasis(string numeroChasis)
+        {
+            if (string.IsNullOrWhiteSpace(numeroChasis))
+                return BadRequest("El número de chasis no puede estar vacío.");
+
+            var automovil = await _context.Automoviles
+                                          .FirstOrDefaultAsync(a => a.NumeroChasis == numeroChasis);
+
+            if (automovil == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(automovil);
+        }
+
+        // ✅ PUT: api/v1/automovil/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAutomovil(int id, Automovil automovil)
         {
@@ -73,18 +90,17 @@ namespace NLayers.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Automovils
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // ✅ POST: api/v1/automovil
         [HttpPost]
         public async Task<ActionResult<Automovil>> PostAutomovil(Automovil automovil)
         {
             _context.Automoviles.Add(automovil);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAutomovil", new { id = automovil.Id }, automovil);
+            return CreatedAtAction(nameof(GetAutomovil), new { id = automovil.Id }, automovil);
         }
 
-        // DELETE: api/Automovils/5
+        // ✅ DELETE: api/v1/automovil/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAutomovil(int id)
         {
@@ -105,4 +121,5 @@ namespace NLayers.API.Controllers
             return _context.Automoviles.Any(e => e.Id == id);
         }
     }
+
 }
