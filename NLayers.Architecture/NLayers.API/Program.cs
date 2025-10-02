@@ -17,19 +17,11 @@ namespace NLayers.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            //Inyeccion de Managers y Stores;
-            builder.Services.AddScoped<IDummyManager, DummyManager>();
-            builder.Services.AddScoped<IDummyStore, DummyStore>();
-
-            //Inyeccion de DbContext
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NLayersDatabase;Integrated Security=True;");
-            });
 
             var app = builder.Build();
 
@@ -44,10 +36,10 @@ namespace NLayers.API
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
+
         }
     }
 }
